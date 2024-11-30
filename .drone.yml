@@ -2,8 +2,19 @@ kind: pipeline
 name: default
 
 steps:
-  - name: Build & Deploy
-    image: docker:latest
+  - name: test
+    image: golang
     commands:
-      - docker build -t myapp .
-      - docker run -d --name go-server -p 8080:8080 myapp
+      - go mod tidy  # Bağımlılıkları temizler ve günceller
+      - go test
+
+  - name: build
+    image: golang
+    commands:
+      - go mod tidy  # Bağımlılıkları temizler ve günceller
+      - go build -o output
+
+  - name: run
+    image: golang
+    commands:
+      - ./output  # Eğer build kısmında çalıştırılabilir dosyayı üretip çıkarttıysanız
