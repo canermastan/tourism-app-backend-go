@@ -1,28 +1,6 @@
-kind: pipeline
-name: default
-
 steps:
-  - name: Setup Go
-    image: golang:1.23
+  - name: Build & Deploy
+    image: docker:latest
     commands:
-      - go mod download
-      - go mod tidy 
-      #- go test ./...
-  #- name: Linter
-  #  image: golangci/golangci-lint:v1.54.2
-  #  commands:
-  #    - echo "Running Linter..."
-  #    - golangci-lint run ./... 
-
-  - name: Build
-    image: golang:1.23
-    commands:
-      - echo "Building the Go application..."
-      - go mod download
-      - go build -o myapp ./cmd
-
-  - name: Deploy
-    image: alpine:latest
-    commands:
-      - echo "Deploying the application..."
+      - docker build -t myapp .
       - docker run -d --name go-server -p 8080:8080 myapp
