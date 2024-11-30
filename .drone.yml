@@ -2,19 +2,10 @@ kind: pipeline
 name: default
 
 steps:
-  - name: test
-    image: golang
+  - name: Build & Deploy
+    image: docker:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Docker socket'ini bağla
     commands:
-      - go mod tidy  # Bağımlılıkları temizler ve günceller
-      - go test
-
-  - name: build
-    image: golang
-    commands:
-      - go mod tidy  # Bağımlılıkları temizler ve günceller
-      - go build -o output
-
-  - name: run
-    image: golang
-    commands:
-      - ./output  # Eğer build kısmında çalıştırılabilir dosyayı üretip çıkarttıysanız
+      - docker build -t myapp .    # Docker image'ı oluştur
+      - docker run -d --name go-server -p 8080:8080 myapp  # Docker container'ı başlat
