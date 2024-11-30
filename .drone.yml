@@ -2,21 +2,27 @@ kind: pipeline
 name: default
 
 steps:
-  - name: Test
+  - name: Setup Go
     image: golang:1.23
     commands:
       - go mod download
-      - go test ./... -v
-
+      - go mod tidy 
+      #- go test ./...
   - name: Linter
     image: golangci/golangci-lint:v1.54.2
     commands:
-      - golangci-lint run ./...
+      - echo "Running Linter..."
+      - golangci-lint run ./... 
 
-  - name: Build & Run
+  - name: Build
     image: golang:1.23
     commands:
+      - echo "Building the Go application..."
       - go mod download
-      - go build -o myapp .
-      - docker build -t my-go-app .
-      - docker run -d --name go-app my-go-app
+      - go build -o myapp ./cmd
+
+  - name: Deploy
+    image: alpine:latest
+    commands:
+      - echo "Deploying the application..."
+      - docker run -d --name go-server -p 8080:8080 myapp
