@@ -1,5 +1,8 @@
+kind: pipeline
+name: default
+
 steps:
-  - name: Build & Deploy
+ - name: Build & Deploy
     image: docker:latest
     commands:
       - docker build -t myapp .
