@@ -3,11 +3,10 @@ package utils
 import (
 	"context"
 	"database/sql"
-	"time"
-	"your_project/internal/model"
+
+	//"your_project/internal/model"
 
 	"github.com/canermastan/teknofest2025-go-backend/internal/config"
-	"github.com/volatiletech/sqlboiler/boil"
 	"go.uber.org/zap"
 )
 
@@ -28,22 +27,22 @@ func NewZapLogger(cfg *config.Config, remoteDB *sql.DB) (*ZapLogger, error) {
 
 func (l *ZapLogger) Info(ctx context.Context, message string) {
 	l.zapLogger.Info(message)
-	log := model.Log{
+	/*log := model.Log{
 		DeveloperName: l.devName,
 		LogMessage:    message,
 		LogLevel:      "INFO",
 		CreatedAt:     time.Now(),
 	}
-	log.Insert(ctx, l.remoteDB, boil.Infer())
+	log.Insert(ctx, l.remoteDB, boil.Infer())*/
 }
 
 func (l *ZapLogger) Error(ctx context.Context, message string) {
 	l.zapLogger.Error(message)
-	log := model.Log{
+	/*log := model.Log{
 		DeveloperName: l.devName,
 		LogMessage:    message,
 		LogLevel:      "ERROR",
 		CreatedAt:     time.Now(),
 	}
-	log.Insert(ctx, l.remoteDB, boil.Infer())
+	log.Insert(ctx, l.remoteDB, boil.Infer())*/
 }
