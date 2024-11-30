@@ -2,7 +2,7 @@ kind: pipeline
 name: default
 
 steps:
-- name: static-analysis
-  image: sonarsource/sonar-scanner-cli
+- name: staticcheck
+  image: dominikh/go-tools:staticcheck
   commands:
-    - sonar-scanner 
+    - staticcheck ./...  # Projeyi staticcheck ile analiz et
