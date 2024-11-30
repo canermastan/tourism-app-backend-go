@@ -13,12 +13,17 @@ steps:
       - cd /drone/src  # Go projenizin bulunduğu dizine git
       - go mod tidy    # Bağımlılıkları güncelle
       - go build       # Go projesini derle
-      - go run .       # Go projesini çalıştır
+
+  - name: run
+    image: golang:1.23
+    commands:
+      - cd /drone/src  # Go projenizin bulunduğu dizine git
+      - go run .       # Go projesini çalıştır (bu adım sürekli çalışacak)
 
 services:
   - name: backend
     image: golang:1.23
-    command: ["go", "run", "."]  # Projeyi sürekli çalıştıracak komut
+    command: ["go", "run", "."]
     detach: true
     environment:
       - GOPATH=/drone/src
