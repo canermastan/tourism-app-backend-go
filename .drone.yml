@@ -3,6 +3,6 @@ name: default
 
 steps:
 - name: staticcheck
-  image: dominikh/go-tools:staticcheck
+  image: ghcr.io/staticcheck/staticcheck:latest
   commands:
     - staticcheck ./...  # Projeyi staticcheck ile analiz et
