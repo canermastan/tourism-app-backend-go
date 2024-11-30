@@ -4,15 +4,6 @@ name: default
 steps:
   - name: Build & Deploy
     image: docker:latest
-    trusted: true  # Güvenilir step
-    volumes:
-      - name: docker-socket
-        path: /var/run/docker.sock
     commands:
       - docker build -t myapp .
       - docker run -d --name go-server -p 8080:8080 myapp
-
-volumes:
-  - name: docker-socket
-    host:
-      path: /var/run/docker.sock
