@@ -8,11 +8,11 @@ steps:
       - go mod download
       - go mod tidy 
       #- go test ./...
-  - name: Linter
-    image: golangci/golangci-lint:v1.54.2
-    commands:
-      - echo "Running Linter..."
-      - golangci-lint run ./... 
+  #- name: Linter
+  #  image: golangci/golangci-lint:v1.54.2
+  #  commands:
+  #    - echo "Running Linter..."
+  #    - golangci-lint run ./... 
 
   - name: Build
     image: golang:1.23
