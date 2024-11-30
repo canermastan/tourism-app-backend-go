@@ -2,7 +2,7 @@ kind: pipeline
 name: default
 
 steps:
-- name: staticcheck
-  image: ghcr.io/staticcheck/staticcheck:latest
+- name: golangci-lint
+  image: golangci/golangci-lint:latest
   commands:
-    - staticcheck ./...  # Projeyi staticcheck ile analiz et
+    - golangci-lint run ./...  # Çoklu linter'lar ile kodu analiz et
