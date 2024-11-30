@@ -2,10 +2,23 @@ kind: pipeline
 name: default
 
 steps:
-  - name: Build & Deploy
-    image: docker:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock  # Docker socket'ini bağla
+  - name: clone
+    image: alpine/git
     commands:
-      - docker build -t myapp .    # Docker image'ı oluştur
-      - docker run -d --name go-server -p 8080:8080 myapp  # Docker container'ı başlat
+      - git clone https://github.com/canermastan/teknofest2025-go-backend.git /drone/src
+
+  - name: build
+    image: golang:1.23
+    commands:
+      - cd /drone/src  # Go projenizin bulunduğu dizine git
+      - go mod tidy    # Bağımlılıkları güncelle
+      - go build       # Go projesini derle
+      - go run .       # Go projesini çalıştır
+
+services:
+  - name: backend
+    image: golang:1.23
+    command: ["go", "run", "."]  # Projeyi sürekli çalıştıracak komut
+    detach: true
+    environment:
+      - GOPATH=/drone/src
