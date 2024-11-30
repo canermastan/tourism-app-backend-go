@@ -2,28 +2,7 @@ kind: pipeline
 name: default
 
 steps:
-  - name: clone
-    image: alpine/git
-    commands:
-      - git clone https://github.com/canermastan/teknofest2025-go-backend.git /drone/src
-
-  - name: build
-    image: golang:1.23
-    commands:
-      - cd /drone/src  # Go projenizin bulunduğu dizine git
-      - go mod tidy    # Bağımlılıkları güncelle
-      - go build       # Go projesini derle
-
-  - name: run
-    image: golang:1.23
-    commands:
-      - cd /drone/src  # Go projenizin bulunduğu dizine git
-      - go run .       # Go projesini çalıştır (bu adım sürekli çalışacak)
-
-services:
-  - name: backend
-    image: golang:1.23
-    command: ["go", "run", "."]
-    detach: true
-    environment:
-      - GOPATH=/drone/src
+- name: static-analysis
+  image: sonarsource/sonar-scanner-cli
+  commands:
+    - sonar-scanner 
