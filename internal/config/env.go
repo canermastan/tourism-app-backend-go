@@ -1,9 +1,9 @@
 package config
 
 import (
-	"os"
-
 	"github.com/joho/godotenv"
+	"os"
+	"regexp"
 )
 
 type Config struct {
@@ -21,7 +21,11 @@ type DBConfig struct {
 }
 
 func LoadConfig() (*Config, error) {
-	err := godotenv.Load(".env")
+	projectName := regexp.MustCompile(`^(.*` + "teknofest2025-go-backend" + `)`)
+	currentWorkDirectory, _ := os.Getwd()
+	rootPath := projectName.Find([]byte(currentWorkDirectory))
+
+	err := godotenv.Load(string(rootPath) + `/.env`)
 	if err != nil {
 		return nil, err
 	}
