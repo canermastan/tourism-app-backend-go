@@ -1,37 +1,41 @@
 package main
 
 import (
-	"context"
-	"fmt"
+	"github.com/canermastan/teknofest2025-go-backend/internal/middleware"
+	"github.com/canermastan/teknofest2025-go-backend/internal/model"
 	"log"
 
 	"github.com/canermastan/teknofest2025-go-backend/internal/config"
 	"github.com/canermastan/teknofest2025-go-backend/internal/routes"
 	"github.com/canermastan/teknofest2025-go-backend/internal/utils"
-	"github.com/labstack/echo/v4"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	e := echo.New()
+	app := fiber.New()
 
+	// Load configuration
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("Config yüklenemedi: %v", err)
 	}
-
-	localDB, err := utils.ConnectDB(cfg.LocalDB)
+	// Connect to local database
+	db, err := utils.ConnectDB(cfg.LocalDB)
 	if err != nil {
 		log.Fatalf("Local DB bağlantı hatası: %v", err)
 	}
-	defer localDB.Close()
+	log.Println("Veritabanına başarıyla bağlanıldı.")
 
-	remoteDB, err := utils.ConnectDB(cfg.RemoteDB)
+	if err := db.AutoMigrate(&model.Review{}); err != nil {
+		log.Fatalf("Migrate işlemi başarısız: %v", err)
+	}
+	// Connect to remote database
+	/*_, err = utils.ConnectDB(cfg.RemoteDB)
 	if err != nil {
 		log.Fatalf("Remote DB bağlantı hatası: %v", err)
-	}
-	defer remoteDB.Close()
+	}*/
 
-	logger, err := utils.NewZapLogger(cfg, remoteDB)
+	/*logger, err := utils.NewZapLogger(cfg, remoteDB)
 	if err != nil {
 		log.Fatalf("Logger başlatılamadı: %v", err)
 	}
@@ -39,10 +43,10 @@ func main() {
 	// Örnek loglar
 	ctx := context.Background()
 	logger.Info(ctx, "Proje başlatıldı")
-	logger.Error(ctx, "Bir hata oluştu")
-	fmt.Println("Proje çalışıyor!")
+	logger.Error(ctx, "Bir hata oluştu")*/
 
-	routes.RegisterRoutes(e)
+	app.Use(middleware.LoggerMiddleware())
+	routes.RegisterRoutes(app, db)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	app.Listen(":3001")
 }

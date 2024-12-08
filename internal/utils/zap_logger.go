@@ -1,13 +1,8 @@
 package utils
 
 import (
-	"context"
 	"database/sql"
-	"time"
-	"your_project/internal/model"
 
-	"github.com/canermastan/teknofest2025-go-backend/internal/config"
-	"github.com/volatiletech/sqlboiler/boil"
 	"go.uber.org/zap"
 )
 
@@ -17,6 +12,8 @@ type ZapLogger struct {
 	devName   string
 }
 
+// TODO: develop this
+/*
 func NewZapLogger(cfg *config.Config, remoteDB *sql.DB) (*ZapLogger, error) {
 	zapLogger := zap.NewExample().With(zap.String("developer", cfg.DevName))
 	return &ZapLogger{
@@ -46,4 +43,4 @@ func (l *ZapLogger) Error(ctx context.Context, message string) {
 		CreatedAt:     time.Now(),
 	}
 	log.Insert(ctx, l.remoteDB, boil.Infer())
-}
+}*/
