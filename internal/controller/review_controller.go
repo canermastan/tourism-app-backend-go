@@ -21,9 +21,9 @@ func NewReviewController(service *service.ReviewService) *ReviewController {
 func (rc *ReviewController) GetAll(c *fiber.Ctx) error {
 	reviews, err := rc.service.GetAll()
 	if err != nil {
-		return response.ErrorResponse(c, 400, "Reviews not found")
+		return response.ErrorResponse(c, 400, "Kayıt bulunamadı.")
 	}
-	return response.SuccessResponse(c, reviews, "Reviews found")
+	return response.SuccessResponse(c, reviews, "Kayıt bulundu.")
 }
 
 func (rc *ReviewController) GetByID(c *fiber.Ctx) error {
@@ -37,7 +37,7 @@ func (rc *ReviewController) GetByID(c *fiber.Ctx) error {
 		return response.ErrorResponse(c, 500, err.Error())
 	}
 
-	return response.SuccessResponse(c, review, "Review found")
+	return response.SuccessResponse(c, review, "Kayıt bulundu.")
 }
 
 func (rc *ReviewController) Create(c *fiber.Ctx) error {
@@ -55,7 +55,7 @@ func (rc *ReviewController) Create(c *fiber.Ctx) error {
 		return response.ErrorResponse(c, 500, err.Error())
 	}
 
-	return response.SuccessResponse(c, review, "Review created")
+	return response.SuccessResponse(c, review, "Kayıt oluşturuldu.")
 }
 
 func (rc *ReviewController) Update(c *fiber.Ctx) error {
@@ -73,7 +73,7 @@ func (rc *ReviewController) Update(c *fiber.Ctx) error {
 	if err := rc.service.Update(&review); err != nil {
 		return response.ErrorResponse(c, 500, err.Error())
 	}
-	return response.SuccessResponse(c, review, "Review updated")
+	return response.SuccessResponse(c, review, "Kayıt güncellendi.")
 }
 
 func (rc *ReviewController) Delete(c *fiber.Ctx) error {
@@ -86,5 +86,5 @@ func (rc *ReviewController) Delete(c *fiber.Ctx) error {
 		return response.ErrorResponse(c, 500, err.Error())
 	}
 
-	return response.SuccessResponse(c, nil, "Review deleted")
+	return response.SuccessResponse(c, nil, "Kayıt silindi.")
 }
