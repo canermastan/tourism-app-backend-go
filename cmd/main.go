@@ -26,7 +26,10 @@ func main() {
 	}
 	log.Println("Veritabanına başarıyla bağlanıldı.")
 
-	if err := db.AutoMigrate(&model.Review{}); err != nil {
+	if err := db.AutoMigrate(
+		&model.Review{},
+		&model.Chest{},
+	); err != nil {
 		log.Fatalf("Migrate işlemi başarısız: %v", err)
 	}
 	// Connect to remote database
