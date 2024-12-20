@@ -24,5 +24,14 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	review.Delete("/:id", reviewController.Delete)    // DELETE /api/review/delete/:id
 
 	// Other routes...
+	chestRepository := repository.NewChestRepository(db)
+	chestService := service.NewChestService(chestRepository)
+	chestController := controller.NewChestController(chestService)
 
+	chest := api.Group("/chest")
+	chest.Post("/create", chestController.Create)       // POST /api/chest/create
+	chest.Put("/update/:id", chestController.Update)    // PUT /api/chest/update/:id
+	chest.Delete("/delete/:id", chestController.Delete) // DELETE /api/chest/delete/:id
+	chest.Get("/find/:id", chestController.GetById)     // GET /api/chest/find/:id
+	chest.Get("/findAll", chestController.GetAll)       // GET /api/chest/findAll
 }
