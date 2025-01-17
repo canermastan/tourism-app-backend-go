@@ -16,9 +16,10 @@ func NewChestService(chestRepository *repository.ChestRepository) *ChestService 
 }
 
 func (c *ChestService) Create(chest *model.Chest) error {
-	if chest.PlaceID < 0 {
-		// TODO: return &model.ValidationError{Message: "Place ID must be a positive integer."}
+	if chest.PlaceID <= 0 {
+		return &model.ValidationError{Message: "Place ID must be a positive integer and cannot be zero or undefined."}
 	}
+
 	return c.repo.Create(chest)
 }
 
