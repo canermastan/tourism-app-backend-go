@@ -21,7 +21,7 @@ type DBConfig struct {
 }
 
 func LoadConfig() (*Config, error) {
-	projectName := regexp.MustCompile(`^(.*` + "tourism-app-backend-go" + `)`)
+	projectName := regexp.MustCompile(`^(.*` + "teknofest2025-go-backend" + `)`)
 	currentWorkDirectory, _ := os.Getwd()
 	rootPath := projectName.Find([]byte(currentWorkDirectory))
 
