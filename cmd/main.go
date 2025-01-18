@@ -51,5 +51,7 @@ func main() {
 	app.Use(middleware.LoggerMiddleware())
 	routes.RegisterRoutes(app, db)
 
-	app.Listen(":3001")
+	if err := app.Listen(":3001"); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }
