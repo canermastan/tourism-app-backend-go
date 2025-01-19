@@ -36,4 +36,15 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	chest.Delete("/delete/:id", chestController.Delete) // DELETE /api/chest/delete/:id
 	chest.Get("/find/:id", chestController.GetById)     // GET /api/chest/find/:id
 	chest.Get("/findAll", chestController.GetAll)       // GET /api/chest/findAll
+
+	// CollectedChests
+	collectedChestRepository := repository.NewCollectedChestRepository(db)
+	collectedChestService := service.NewCollectedChestService(collectedChestRepository)
+	collectedChestController := controller.NewCollectedChestController(collectedChestService)
+
+	collectedChest := api.Group("/collectedChest")
+	collectedChest.Post("/create", collectedChestController.Create)             // POST /api/collectedChest/create
+	collectedChest.Get("/findByUser/:id", collectedChestController.GetByUserID) // GET /api/collectedChest/findByUser/:id
+	collectedChest.Put("/update/:id", collectedChestController.Update)          // PUT /api/collectedChest/update/:id
+	collectedChest.Delete("/delete/:id", collectedChestController.Delete)       // DELETE /api/collectedChest/delete/:id
 }
