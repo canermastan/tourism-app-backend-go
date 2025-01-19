@@ -29,6 +29,7 @@ func main() {
 	if err := db.AutoMigrate(
 		&model.Review{},
 		&model.Chest{},
+		&model.CollectedChest{},
 	); err != nil {
 		log.Fatalf("Migrate işlemi başarısız: %v", err)
 	}
