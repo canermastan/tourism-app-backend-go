@@ -25,7 +25,25 @@ func (r *ReviewRepository) GetAll() ([]model.Review, error) {
 	return reviews, err
 }
 
-func (r *ReviewRepository) GetById(id int64) (*model.Review, error) {
+func (r *ReviewRepository) GetByPlaceID(placeID int64) ([]model.Review, error) {
+	var reviews []model.Review
+	err := r.db.Where("place_id = ?", placeID).Find(&reviews).Error
+	if err != nil {
+		return nil, err
+	}
+	return reviews, nil
+}
+
+func (r *ReviewRepository) GetByPlaceIDAndUserID(placeID, userID int64) ([]model.Review, error) {
+	var reviews []model.Review
+	err := r.db.Where("place_id = ? AND user_id = ?", placeID, userID).Find(&reviews).Error
+	if err != nil {
+		return nil, err
+	}
+	return reviews, nil
+}
+
+func (r *ReviewRepository) GetByID(id int64) (*model.Review, error) {
 	var review model.Review
 	err := r.db.First(&review, id).Error
 	if err != nil {

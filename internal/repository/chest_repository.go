@@ -29,7 +29,7 @@ func (r *ChestRepository) Delete(id int64) error {
 
 func (r *ChestRepository) GetByID(id int64) (*model.Chest, error) {
 	var chest model.Chest
-	err := r.db.First(&chest, id).Error
+	err := r.db.Where("place_id = ?", id).Find(&chest).Error
 	if err != nil {
 		return nil, err
 	}

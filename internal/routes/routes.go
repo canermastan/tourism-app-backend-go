@@ -17,11 +17,13 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	reviewController := controller.NewReviewController(reviewService)
 
 	review := api.Group("/review")
-	review.Post("/save", reviewController.Create)     // POST /api/review/save
-	review.Get("/findAll", reviewController.GetAll)   // GET /api/review/find
-	review.Get("/find/:id", reviewController.GetByID) // GET /api/review/find/:id
-	review.Put("/:id", reviewController.Update)       // PUT /api/review/update/:id
-	review.Delete("/:id", reviewController.Delete)    // DELETE /api/review/delete/:id
+	review.Post("/save", reviewController.Create)                                                // POST /api/review/save
+	review.Get("/findAll", reviewController.GetAll)                                              // GET /api/review/findAll
+	review.Get("/find/:id", reviewController.GetByID)                                            // GET /api/review/find/:id
+	review.Get("/findByPlace/:place_id", reviewController.GetByPlaceID)                          // GET /api/review/findByPlace/:place_id
+	review.Get("/findByPlaceAndUser/:place_id/:user_id", reviewController.GetByPlaceIDAndUserID) // GET /api/review/findByPlaceAndUser/:place_id/:user_id
+	review.Put("/update/:id", reviewController.Update)                                           // PUT /api/review/update/:id
+	review.Delete("/delete/:id", reviewController.Delete)                                        // DELETE /api/review/delete/:id
 
 	// Other routes...
 	chestRepository := repository.NewChestRepository(db)
