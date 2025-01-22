@@ -52,7 +52,7 @@ func main() {
 	app.Use(middleware.LoggerMiddleware())
 	routes.RegisterRoutes(app, db)
 
-	if err := app.Listen(":3000"); err != nil {
+	if err := app.Listen(":3001"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
