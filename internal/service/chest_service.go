@@ -32,7 +32,7 @@ func (c *ChestService) Delete(id int64) error {
 	return c.repo.Delete(id)
 }
 
-func (c *ChestService) GetByID(id int64) (*model.Chest, error) {
+func (c *ChestService) GetByID(id int64) ([]model.Chest, error) {
 	return c.repo.GetByID(id)
 }
 
