@@ -27,13 +27,17 @@ func (r *ChestRepository) Delete(id int64) error {
 	return r.db.Delete(&model.Chest{}, id).Error
 }
 
-func (r *ChestRepository) GetByID(id int64) (*model.Chest, error) {
-	var chest model.Chest
-	err := r.db.Where("place_id = ?", id).Find(&chest).Error
-	if err != nil {
-		return nil, err
+func (r *ChestRepository) GetByID(id int64) ([]model.Chest, error) {
+	var chests []model.Chest
+
+	result := r.db.Where("place_id = ?", id).Find(&chests)
+	if result.Error != nil {
+		return nil, result.Error
 	}
-	return &chest, nil
+	if result.RowsAffected == 0 {
+		return []model.Chest{}, nil
+	}
+	return chests, nil
 }
 
 func (r *ChestRepository) GetAll() ([]model.Chest, error) {
