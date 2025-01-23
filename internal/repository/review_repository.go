@@ -45,9 +45,13 @@ func (r *ReviewRepository) GetByPlaceIDAndUserID(placeID, userID int64) ([]model
 
 func (r *ReviewRepository) GetByID(id int64) (*model.Review, error) {
 	var review model.Review
-	err := r.db.First(&review, id).Error
-	if err != nil {
-		return nil, err
+	result := r.db.First(&review, id)
+
+	if result.RowsAffected == 0 {
+		return nil, nil
+	}
+	if result.Error != nil {
+		return nil, result.Error
 	}
 	return &review, nil
 }
