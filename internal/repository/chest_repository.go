@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"github.com/canermastan/teknofest2025-go-backend/internal/model"
 	"gorm.io/gorm"
 )
@@ -15,9 +16,7 @@ func NewChestRepository(db *gorm.DB) *ChestRepository {
 	}
 }
 
-func (r *ChestRepository) Create(chest *model.Chest) error {
-	return r.db.Create(chest).Error
-}
+func (r *ChestRepository) Create(chest *model.Chest) error { return r.db.Create(chest).Error }
 
 func (r *ChestRepository) Update(chest *model.Chest) error {
 	return r.db.Save(chest).Error
@@ -27,17 +26,17 @@ func (r *ChestRepository) Delete(id int64) error {
 	return r.db.Delete(&model.Chest{}, id).Error
 }
 
-func (r *ChestRepository) GetByID(id int64) ([]model.Chest, error) {
-	var chests []model.Chest
+func (r *ChestRepository) GetByID(id int64) (*model.Chest, error) {
+	var chest model.Chest
+	err := r.db.First(&chest, id).Error
 
-	result := r.db.Where("place_id = ?", id).Find(&chests)
-	if result.Error != nil {
-		return nil, result.Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
 	}
-	if result.RowsAffected == 0 {
-		return []model.Chest{}, nil
+	if err != nil {
+		return nil, err
 	}
-	return chests, nil
+	return &chest, nil
 }
 
 func (r *ChestRepository) GetAll() ([]model.Chest, error) {
