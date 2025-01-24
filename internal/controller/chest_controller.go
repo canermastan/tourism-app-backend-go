@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"errors"
 	"github.com/canermastan/teknofest2025-go-backend/internal/model"
 	"github.com/canermastan/teknofest2025-go-backend/internal/response"
 	"github.com/canermastan/teknofest2025-go-backend/internal/service"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type ChestController struct {
@@ -68,6 +70,9 @@ func (c *ChestController) GetById(ctx *fiber.Ctx) error {
 
 	chest, err := c.service.GetByID(int64(id))
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) { // TODO: refactor this
+			return response.SuccessResponse(ctx, nil, "Kayıt getirildi.")
+		}
 		return response.ErrorResponse(ctx, 404, "Kayıt bulunamadı.")
 	}
 

@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"errors"
 	"github.com/canermastan/teknofest2025-go-backend/internal/model"
 	"gorm.io/gorm"
 )
@@ -29,10 +28,7 @@ func (r *ChestRepository) Delete(id int64) error {
 func (r *ChestRepository) GetByID(id int64) (*model.Chest, error) {
 	var chest model.Chest
 	err := r.db.First(&chest, id).Error
-
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil
-	}
+	
 	if err != nil {
 		return nil, err
 	}
