@@ -73,7 +73,6 @@ func (c *ChestController) GetById(ctx *fiber.Ctx) error {
 		if errors.Is(err, gorm.ErrRecordNotFound) { // TODO: refactor this
 			return response.SuccessResponse(ctx, nil, "Kayıt getirildi.")
 		}
-		return response.ErrorResponse(ctx, 404, "Kayıt bulunamadı.")
 	}
 
 	return response.SuccessResponse(ctx, chest, "Kayıt getirildi.")
