@@ -9,6 +9,9 @@ import (
 )
 
 func RegisterRoutes(app *fiber.App, db *gorm.DB) {
+	// Translate
+	app.Post("/translate", controller.TranslateText)
+
 	api := app.Group("/api")
 
 	// Reviews
