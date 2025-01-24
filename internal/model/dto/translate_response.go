@@ -1,5 +1,15 @@
 package dto
 
+/*
+	{
+		"alternatives": [],
+		"detectedLanguage": {
+			"confidence": 0,
+			"language": "en"
+		},
+		"translatedText": "asdasdasd"
+	}
+*/
 type TranslateResponse struct {
 	Alternatives     []interface{} `json:"alternatives"`
 	DetectedLanguage struct {

@@ -1,5 +1,15 @@
 package dto
 
+/*
+	{
+	  "q": "...",
+	  "source": "auto",
+	  "target": "en",
+	  "format": "text",
+	  "alternatives": 3,
+	  "api_key": ""
+	}
+*/
 type TranslateRequest struct {
 	Text         string `json:"q"`
 	Source       string `json:"source"`
