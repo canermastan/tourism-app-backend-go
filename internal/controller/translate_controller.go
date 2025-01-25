@@ -48,7 +48,11 @@ func TranslateText(ctx *fiber.Ctx) error {
 		return response.ErrorResponse(ctx, fiber.StatusInternalServerError, "Çeviri servisine ulaşılamadı")
 	}
 
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	body, err = io.ReadAll(resp.Body)
 	if err != nil {
