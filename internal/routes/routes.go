@@ -11,7 +11,7 @@ import (
 func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	// Translate
 	app.Post("/translate", controller.TranslateText)
-
+	app.Get("/weather", controller.GetWeatherByCoordinates)
 	api := app.Group("/api")
 
 	// Reviews

@@ -57,7 +57,7 @@ func SetupTestDB() (*gorm.DB, error) {
 	cfg := LoadTestConfig()
 	db, err := ConnectTestDB(cfg)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to connect to test database: %v", err)
+		return nil, fmt.Errorf("failed to connect to test database: %v", err)
 	}
 	return db, nil
 }
@@ -65,11 +65,11 @@ func SetupTestDB() (*gorm.DB, error) {
 func CleanupTestDB(db *gorm.DB) error {
 	sqlDB, err := db.DB()
 	if err != nil {
-		return fmt.Errorf("Failed to get sqlDB from gorm.DB: %v", err)
+		return fmt.Errorf("failed to get sqlDB from gorm.DB: %v", err)
 	}
 	err = sqlDB.Close()
 	if err != nil {
-		return fmt.Errorf("Failed to close test database connection: %v", err)
+		return fmt.Errorf("failed to close test database connection: %v", err)
 	}
 	return nil
 }
