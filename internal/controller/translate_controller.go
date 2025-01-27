@@ -26,7 +26,7 @@ func TranslateText(ctx *fiber.Ctx) error {
 		return response.ErrorResponse(ctx, fiber.StatusBadRequest, "'text' alanı gerekli.")
 	}
 
-	url := "https://translate.canermastan.com"
+	url := "https://translate.canermastan.com/translate"
 	payload := dto.TranslateRequest{
 		Text:         text,
 		Source:       "auto",
