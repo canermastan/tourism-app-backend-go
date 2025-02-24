@@ -1,10 +1,15 @@
 package main
 
 import (
+	"context"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"github.com/canermastan/teknofest2025-go-backend/internal/middleware"
 	"github.com/canermastan/teknofest2025-go-backend/internal/model"
-	"log"
-
 	"github.com/canermastan/teknofest2025-go-backend/internal/config"
 	"github.com/canermastan/teknofest2025-go-backend/internal/routes"
 	"github.com/canermastan/teknofest2025-go-backend/internal/utils"
@@ -33,26 +38,29 @@ func main() {
 	); err != nil {
 		log.Fatalf("Migrate işlemi başarısız: %v", err)
 	}
-	// Connect to remote database
-	/*_, err = utils.ConnectDB(cfg.RemoteDB)
-	if err != nil {
-		log.Fatalf("Remote DB bağlantı hatası: %v", err)
-	}*/
-
-	/*logger, err := utils.NewZapLogger(cfg, remoteDB)
-	if err != nil {
-		log.Fatalf("Logger başlatılamadı: %v", err)
-	}
-
-	// Örnek loglar
-	ctx := context.Background()
-	logger.Info(ctx, "Proje başlatıldı")
-	logger.Error(ctx, "Bir hata oluştu")*/
-
+	
 	app.Use(middleware.LoggerMiddleware())
 	routes.RegisterRoutes(app, db)
-
-	if err := app.Listen(":3001"); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
+	
+	// Server start and Gracefully shutdown server with a timeout
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM)
+	
+	go func() {
+		if err := app.Listen(":3001"); err != nil {
+			log.Fatalf("Failed to start server: %v", err)	
+		}
+	}()
+	
+	receivedSignal := <-stop
+	log.Printf("Received signal: %s, shutting down server...", receivedSignal)
+	
+	_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	
+	if err := app.Shutdown(); err != nil {
+		log.Fatalf("Server shutdown failed: %v", err)
 	}
+
+	log.Println("Server stopped gracefully")
 }
