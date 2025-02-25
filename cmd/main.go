@@ -22,21 +22,21 @@ func main() {
 	// Load configuration
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Fatalf("Config yüklenemedi: %v", err)
+		log.Fatalf("Failed to load config: %v", err)
 	}
 	// Connect to local database
-	db, err := utils.ConnectDB(cfg.LocalDB)
+	db, err := utils.ConnectDB(cfg.RemoteDB)
 	if err != nil {
-		log.Fatalf("Local DB bağlantı hatası: %v", err)
+		log.Fatalf("Database connection error: %v", err)
 	}
-	log.Println("Veritabanına başarıyla bağlanıldı.")
+	log.Println("Successfully connected to database")
 
 	if err := db.AutoMigrate(
 		&model.Review{},
 		&model.Chest{},
 		&model.CollectedChest{},
 	); err != nil {
-		log.Fatalf("Migrate işlemi başarısız: %v", err)
+		log.Fatalf("Migrate operation failed: %v", err)
 	}
 	
 	app.Use(middleware.LoggerMiddleware())
