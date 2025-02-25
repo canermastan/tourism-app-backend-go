@@ -25,7 +25,7 @@ func main() {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 	// Connect to local database
-	db, err := utils.ConnectDB(cfg.RemoteDB)
+	db, err := utils.ConnectDB(cfg.LocalDB)
 	if err != nil {
 		log.Fatalf("Database connection error: %v", err)
 	}
